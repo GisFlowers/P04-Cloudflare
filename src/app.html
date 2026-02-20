@@ -1,11 +1,101 @@
 <!doctype html>
-<html lang="en">
+<html lang="es-MX">
 	<head>
 		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1, viewport-fit=cover"
+		/>
+
+		<!-- SEO base (lo fino por página va en +page.svelte / +layout.svelte) -->
+		<meta name="description" content="Gisele.com" />
+		<meta name="robots" content="index,follow" />
+		<meta name="referrer" content="strict-origin-when-cross-origin" />
+
+		<!-- UI / theming -->
+		<meta name="color-scheme" content="dark light" />
+		<meta name="theme-color" content="#0b0b0f" />
+
+		<!-- Icons / PWA (ajusta rutas si no existen) -->
+		<link rel="icon" href="/favicon.svg" />
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+		<link rel="manifest" href="/site.webmanifest" />
+
+		<!-- “Shell” CSS mínimo para que no se vea en blanco/feo mientras carga -->
+		<style>
+			:root {
+				--bg: #0b0b0f;
+				--fg: #e9e9ef;
+				--muted: #a8a8b3;
+				--ring: rgba(99, 102, 241, 0.65);
+			}
+			html,
+			body {
+				height: 100%;
+			}
+			body {
+				margin: 0;
+				background: var(--bg);
+				color: var(--fg);
+				font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial,
+					"Apple Color Emoji", "Segoe UI Emoji";
+				-webkit-font-smoothing: antialiased;
+				text-rendering: optimizeLegibility;
+			}
+			a {
+				color: inherit;
+			}
+
+			/* Accesibilidad: skip link */
+			.skip-link {
+				position: absolute;
+				left: -9999px;
+				top: 0;
+				padding: 0.75rem 1rem;
+				background: #121224;
+				border-radius: 0.75rem;
+				z-index: 9999;
+			}
+			.skip-link:focus {
+				left: 1rem;
+				top: 1rem;
+				outline: 3px solid var(--ring);
+			}
+
+			/* Mantén el wrapper sin afectar layouts */
+			#svelte {
+				display: contents;
+			}
+
+			/* Footer básico (si lo dejas aquí) */
+			.site-footer {
+				padding: 1.25rem 1rem;
+				text-align: center;
+				color: var(--muted);
+				font-size: 0.875rem;
+			}
+		</style>
+
 		%sveltekit.head%
 	</head>
+
 	<body data-sveltekit-preload-data="hover">
-		<div style="display: contents">%sveltekit.body%</div>
+		<a class="skip-link" href="#main">Saltar al contenido</a>
+
+		<div id="svelte">%sveltekit.body%</div>
+
+		<noscript>
+			<div class="site-footer">
+				Esta web necesita JavaScript para funcionar correctamente.
+			</div>
+		</noscript>
+
+		<!-- Si quieres footer fijo “global”, mejor muévelo a +layout.svelte -->
+		<footer class="site-footer" aria-label="Pie de página">
+			<span>© <span id="y"></span> Gisele.com</span>
+		</footer>
+		<script>
+			document.getElementById("y")?.append(String(new Date().getFullYear()));
+		</script>
 	</body>
 </html>
